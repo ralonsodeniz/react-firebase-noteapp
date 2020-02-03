@@ -12,9 +12,4 @@ export const selectNote = createSelector(
   notes => notes.selectedNote
 );
 
-export const selectNoteId = createSelector(
-  [selectNotes],
-  notes => notes.selectedNoteId
-);
-
 export const selectError = createSelector([selectNotes], notes => notes.error);

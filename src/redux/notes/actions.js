@@ -15,11 +15,6 @@ export const getNotesFailure = error => ({
   payload: error
 });
 
-export const setSelectedNoteId = SelectedNoteId => ({
-  type: NOTES.SET_SELECTED_NOTE_ID,
-  payload: SelectedNoteId
-});
-
 export const setSelectedNote = selectedNote => ({
   type: NOTES.SET_SELECTED_NOTE,
   payload: selectedNote
@@ -28,7 +23,6 @@ export const setSelectedNote = selectedNote => ({
 export const addNoteStart = title => async dispatch => {
   try {
     const newNoteId = await addNoteInFs(title);
-    dispatch(setSelectedNoteId(newNoteId));
     dispatch(
       setSelectedNote({
         title,

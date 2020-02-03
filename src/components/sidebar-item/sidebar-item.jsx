@@ -3,12 +3,8 @@ import { withStyles } from "@material-ui/core/styles";
 import { createStructuredSelector } from "reselect";
 
 import { useStoreContext } from "../../redux/store";
-import {
-  setSelectedNoteId,
-  setSelectedNote,
-  deleteNoteStart
-} from "../../redux/notes/actions";
-import { selectNoteId } from "../../redux/notes/selectors";
+import { setSelectedNote, deleteNoteStart } from "../../redux/notes/actions";
+import { selectNote } from "../../redux/notes/selectors";
 
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -19,17 +15,16 @@ import { removeHTMLTags } from "../../helpers/helpers";
 import styles from "./styles";
 
 const selectSidebarItemData = createStructuredSelector({
-  selectedNoteId: selectNoteId
+  selectedNote: selectNote
 });
 
 const SidebarItem = ({ note, classes }) => {
   const { state, dispatch } = useStoreContext();
 
-  const { selectedNoteId } = selectSidebarItemData(state);
+  const { selectedNote } = selectSidebarItemData(state);
 
   const handleSelectNote = useCallback(
     noteId => {
-      dispatch(setSelectedNoteId(noteId));
       dispatch(setSelectedNote(note));
     },
     [note, dispatch]
@@ -39,20 +34,19 @@ const SidebarItem = ({ note, classes }) => {
     (noteId, noteTitle) => {
       if (window.confirm(`Are you sure you want to delete: ${noteTitle}`)) {
         dispatch(deleteNoteStart(noteId));
-        if (selectedNoteId === noteId) {
-          dispatch(setSelectedNoteId(""));
+        if (selectedNote.id === noteId) {
           dispatch(setSelectedNote({}));
         }
       }
     },
-    [dispatch, selectedNoteId]
+    [dispatch, selectedNote]
   );
 
   return (
     <div>
       <ListItem
         className={classes.listItem}
-        selected={selectedNoteId === note.id}
+        selected={selectedNote.id === note.id}
         alignItems="flex-start"
       >
         <div

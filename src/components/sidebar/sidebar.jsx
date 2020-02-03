@@ -6,20 +6,14 @@ import { createStructuredSelector } from "reselect";
 
 import { useStoreContext } from "../../redux/store";
 import { addNoteStart } from "../../redux/notes/actions";
-import {
-  selectNotesArray,
-  selectNote,
-  selectNoteId
-} from "../../redux/notes/selectors";
+import { selectNotesArray } from "../../redux/notes/selectors";
 
 import SidebarItem from "../sidebar-item/sidebar-item";
 
 import styles from "./styles";
 
 const selectSidebarData = createStructuredSelector({
-  notesArray: selectNotesArray,
-  selectedNote: selectNote,
-  selectedNoteId: selectNoteId
+  notesArray: selectNotesArray
 });
 
 const Sidebar = ({ classes }) => {

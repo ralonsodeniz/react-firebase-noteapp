@@ -4,7 +4,7 @@ import BorderColorIcon from "@material-ui/icons/BorderColor";
 import { withStyles } from "@material-ui/core/styles";
 import { createStructuredSelector } from "reselect";
 
-import { selectNoteId, selectNote } from "../../redux/notes/selectors";
+import { selectNote } from "../../redux/notes/selectors";
 import { useDebounce } from "../../helpers/helpers";
 import { useStoreContext } from "../../redux/store";
 import { updateNoteStarts } from "../../redux/notes/actions";
@@ -12,7 +12,6 @@ import { updateNoteStarts } from "../../redux/notes/actions";
 import styles from "./styles";
 
 const selectEditorData = createStructuredSelector({
-  selectedNoteId: selectNoteId,
   selectedNote: selectNote
 });
 
@@ -24,22 +23,23 @@ const Editor = ({ classes }) => {
 
   const { state, dispatch } = useStoreContext();
 
-  const { selectedNoteId, selectedNote } = selectEditorData(state);
+  const { selectedNote } = selectEditorData(state);
 
   useEffect(() => {
     setEditorState(prevState => ({
       ...prevState,
       text: selectedNote ? (selectedNote.body ? selectedNote.body : "") : ""
     }));
-  }, [selectedNoteId, selectedNote]);
+  }, [selectedNote]);
 
   let { text } = editorState;
 
   const debouncedText = useDebounce(text, 1500);
 
   useEffect(() => {
-    selectedNoteId !== "" &&
-      dispatch(updateNoteStarts(selectedNoteId, debouncedText));
+    selectedNote.id &&
+      selectedNote.id !== "" &&
+      dispatch(updateNoteStarts(selectedNote.id, debouncedText));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedText, dispatch]);
 

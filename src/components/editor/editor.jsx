@@ -18,7 +18,7 @@ const selectEditorData = createStructuredSelector({
 const Editor = ({ classes }) => {
   // this should be  const [editorText, setEditorText] = useState(""); but I leave it like it is as a reminder of how to update the text when the note is changed using useEffect and prevState from the updater function of useState
   const [editorState, setEditorState] = useState({
-    text: ""
+    text: " "
   });
 
   const { state, dispatch } = useStoreContext();
@@ -39,6 +39,7 @@ const Editor = ({ classes }) => {
   useEffect(() => {
     selectedNote.id &&
       selectedNote.id !== "" &&
+      debouncedText !== " " &&
       dispatch(updateNoteStarts(selectedNote.id, debouncedText));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedText, dispatch]);

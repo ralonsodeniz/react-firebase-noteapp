@@ -24,10 +24,10 @@ const SidebarItem = ({ note, classes }) => {
   const { selectedNote } = selectSidebarItemData(state);
 
   const handleSelectNote = useCallback(
-    noteId => {
+    note => {
       dispatch(setSelectedNote(note));
     },
-    [note, dispatch]
+    [dispatch]
   );
 
   const handleDeleteNote = useCallback(
@@ -51,7 +51,7 @@ const SidebarItem = ({ note, classes }) => {
       >
         <div
           className={classes.textSection}
-          onClick={() => handleSelectNote(note.id)}
+          onClick={() => handleSelectNote(note)}
         >
           <ListItemText
             primary={note.title}

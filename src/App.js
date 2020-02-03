@@ -1,16 +1,24 @@
 import React, { useEffect } from "react";
 import { firestore } from "./firebase/firebase";
+import { createStructuredSelector } from "reselect";
 
 import { useStoreContext } from "./redux/store";
 import { getNotesSuccess, getNotesFailure } from "./redux/notes/actions";
+import { selectNote } from "./redux/notes/selectors";
 
 import Editor from "./components/editor/editor";
 import Sidebar from "./components/sidebar/sidebar";
 
 import "./App.css";
 
-function App() {
-  const { dispatch } = useStoreContext();
+const selectAppData = createStructuredSelector({
+  selectedNote: selectNote
+});
+
+const App = () => {
+  const { state, dispatch } = useStoreContext();
+
+  const { selectedNote } = selectAppData(state);
 
   useEffect(() => {
     const unsubscribe = firestore.collection(`notes`).onSnapshot(snapshot => {
@@ -34,9 +42,10 @@ function App() {
   return (
     <div>
       <Sidebar />
-      <Editor />
+      {/* <Editor /> */}
+      {selectedNote.id && <Editor />}
     </div>
   );
-}
+};
 
 export default App;

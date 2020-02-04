@@ -12,4 +12,9 @@ export const selectNote = createSelector(
   notes => notes.selectedNote
 );
 
+export const selectNoteUpdating = createSelector(
+  [selectNotes],
+  notes => notes.noteUpdating
+);
+
 export const selectError = createSelector([selectNotes], notes => notes.error);

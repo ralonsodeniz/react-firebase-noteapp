@@ -2,7 +2,8 @@ import { NOTES } from "./types";
 
 export const NOTES_INITIAL_STATE = {
   notesArray: [],
-  selectedNote: {},
+  selectedNote: null,
+  noteUpdating: false,
   error: ""
 };
 
@@ -34,9 +35,20 @@ const notesReducer = (state = NOTES_INITIAL_STATE, action) => {
         ...state,
         error: action.payload
       };
+    case NOTES.UPDATE_NOTE_START:
+      return {
+        ...state,
+        noteUpdating: true
+      };
+    case NOTES.UPDATE_NOTE_SUCCESS:
+      return {
+        ...state,
+        noteUpdating: false
+      };
     case NOTES.UPDATE_NOTE_FAILURE:
       return {
         ...state,
+        noteUpdating: false,
         error: action.payload
       };
     default:

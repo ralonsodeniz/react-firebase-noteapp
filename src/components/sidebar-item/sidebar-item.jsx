@@ -25,18 +25,25 @@ const SidebarItem = ({ note, classes }) => {
 
   const handleSelectNote = useCallback(
     note => {
-      dispatch(setSelectedNote(note));
+      (!selectedNote || (selectedNote && selectedNote.id !== note.id)) &&
+        dispatch(
+          setSelectedNote({
+            title: note.title,
+            id: note.id,
+            body: note.body
+          })
+        );
     },
-    [dispatch]
+    [dispatch, selectedNote]
   );
 
   const handleDeleteNote = useCallback(
     (noteId, noteTitle) => {
       if (window.confirm(`Are you sure you want to delete: ${noteTitle}`)) {
-        dispatch(deleteNoteStart(noteId));
-        if (selectedNote.id === noteId) {
-          dispatch(setSelectedNote({}));
+        if (selectedNote && selectedNote.id === noteId) {
+          dispatch(setSelectedNote(null));
         }
+        dispatch(deleteNoteStart(noteId));
       }
     },
     [dispatch, selectedNote]
@@ -46,7 +53,7 @@ const SidebarItem = ({ note, classes }) => {
     <div>
       <ListItem
         className={classes.listItem}
-        selected={selectedNote.id === note.id}
+        selected={selectedNote && selectedNote.id === note.id}
         alignItems="flex-start"
       >
         <div

@@ -24,7 +24,9 @@ export const addNoteInFs = async title => {
     await newNoteRef.set({
       title,
       body: "",
-      id: newNoteSnapshot.id
+      id: newNoteSnapshot.id,
+      // this generates a timestamp in the server side
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
     });
     return newNoteSnapshot.id;
   } catch (error) {
@@ -41,13 +43,40 @@ export const deleteNoteInFs = async noteId => {
   }
 };
 
-export const updateNoteInFs = async (noteId, noteBody) => {
+export const updateNoteBodyInFs = async (noteId, noteBody) => {
+  let noteUpdated = null;
   try {
     const noteRef = firestore.doc(`notes/${noteId}`);
-    await noteRef.update({
-      body: noteBody
-    });
+    const noteSnapshot = await noteRef.get();
+    const storedNoteBody = noteSnapshot.data().body;
+    if (storedNoteBody !== noteBody) {
+      await noteRef.update({
+        body: noteBody,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      noteUpdated = (await noteRef.get()).data();
+    }
   } catch (error) {
     throw new Error(error.message);
   }
+  return noteUpdated;
+};
+
+export const updateNoteTitleInFs = async (noteId, noteTitle) => {
+  let noteUpdated = null;
+  try {
+    const noteRef = firestore.doc(`notes/${noteId}`);
+    const noteSnapshot = await noteRef.get();
+    const storedNoteTitle = noteSnapshot.data().title;
+    if (storedNoteTitle !== noteTitle) {
+      await noteRef.update({
+        title: noteTitle,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      noteUpdated = (await noteRef.get()).data();
+    }
+  } catch (error) {
+    throw new Error(error.message);
+  }
+  return noteUpdated;
 };

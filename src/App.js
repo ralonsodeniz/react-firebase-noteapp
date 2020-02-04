@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { firestore } from "./firebase/firebase";
 import { createStructuredSelector } from "reselect";
 
@@ -39,12 +39,14 @@ const App = () => {
     };
   }, [dispatch]);
 
-  return (
-    <div>
-      <Sidebar />
-      {/* <Editor /> */}
-      {selectedNote.id && <Editor />}
-    </div>
+  return useMemo(
+    () => (
+      <div>
+        <Sidebar />
+        {selectedNote && <Editor />}
+      </div>
+    ),
+    [selectedNote]
   );
 };
 

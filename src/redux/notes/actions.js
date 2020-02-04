@@ -2,7 +2,8 @@ import { NOTES } from "./types";
 import {
   addNoteInFs,
   deleteNoteInFs,
-  updateNoteInFs
+  updateNoteBodyInFs,
+  updateNoteTitleInFs
 } from "../../firebase/firebase";
 
 export const getNotesSuccess = notes => ({
@@ -55,9 +56,34 @@ export const deleteNoteFailure = error => ({
   payload: error
 });
 
-export const updateNoteStarts = (noteId, noteBody) => async dispatch => {
+export const updateNoteBodyStart = (noteId, noteBody) => async dispatch => {
+  dispatch({
+    type: NOTES.UPDATE_NOTE_START
+  });
   try {
-    await updateNoteInFs(noteId, noteBody);
+    await updateNoteBodyInFs(noteId, noteBody);
+    // const updatedNote = await updateNoteBodyInFs(noteId, noteBody);
+    // updatedNote && dispatch(setSelectedNote(updatedNote));
+    dispatch({
+      type: NOTES.UPDATE_NOTE_SUCCESS
+    });
+  } catch (error) {
+    console.log(`updating note failed, ${error}`);
+    dispatch(updateNoteFailure(error));
+  }
+};
+
+export const updateNoteTitleStart = (noteId, noteTitle) => async dispatch => {
+  dispatch({
+    type: NOTES.UPDATE_NOTE_START
+  });
+  try {
+    await updateNoteTitleInFs(noteId, noteTitle);
+    // const updatedNote = await updateNoteTitleInFs(noteId, noteTitle);
+    // updatedNote && dispatch(setSelectedNote(updatedNote));
+    dispatch({
+      type: NOTES.UPDATE_NOTE_SUCCESS
+    });
   } catch (error) {
     console.log(`updating note failed, ${error}`);
     dispatch(updateNoteFailure(error));

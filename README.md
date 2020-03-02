@@ -13,7 +13,7 @@ Rework based on the tutorial [Intermediate React and Firebase Tutorial - Build a
 - [React](https://es.reactjs.org/) - JavaScript library for building user interfaces.
 - [React Quill](https://github.com/zenoamaro/react-quill) - Powerful rich text editor for React.
 - [Reselect](https://github.com/reduxjs/reselect) - Simple “selector” library for Redux using memoization.
-- [Material UI](https://github.com/reduxjs/reselect) - React components for faster and easier web development.
+- [Material UI](https://material-ui.com/) - React components for faster and easier web development.
 
 ### Back-End
 
